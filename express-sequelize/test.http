@@ -1,0 +1,31 @@
+### GET ALL ITEMS
+GET http://localhost:3000/users
+?page=2
+&size=3
+
+
+### GET ITEM BY ID
+GET http://localhost:3000/users/2
+
+### ADD ITEM
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+      "username": "Marcos",
+      "email": "marcosemail@hotmail.com",
+      "password":"supersecretpassword@asdf"
+}
+
+### DELETE ITEM BY ID
+DELETE http://localhost:3000/users/2
+
+### UPDATE ITEM
+PUT http://localhost:3000/users/4
+Content-Type: application/json
+
+{
+      "username": "Marcos",
+      "email": "marcosemail@hotmail.com",
+      "password":"supersecretpassword@asdf"
+}
