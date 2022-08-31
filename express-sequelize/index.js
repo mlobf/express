@@ -3,8 +3,15 @@ const express = require("express");
 const sequelize = require('./database')
 const User = require('./User')
 
-sequelize.sync({ force: true }).then(() => {
-  console.log('db is ready')
+sequelize.sync({ force: true }).then(async () => {
+  for (let x = 0;x < 10;x++) {
+    const user = {
+      username: `user${x}`,
+      email: `user${x}@gmail.com`,
+      password: `udfkjsdfksjkfjaer${x}`,
+    }
+    await User.create(user)
+  }
 })
 
 const app = express();
@@ -17,10 +24,20 @@ app.post('/users', async (req, res) => {
   res.send('user is inserted')
 })
 
+// ---------------------------------------------------------
+// Add pagination
+// Stoped at 16:27
 app.get('/users', async (req, res) => {
-  const users = await User.findAll()
+  const pageAsNumber = Number.parseInt(req.query.page)
+  const sizeAsNumber = Number.parseInt(req.query.size)
+  const { page, size } = req.query
+  const users = await User.findAndCountAll({
+    limit: size,
+    offset: page * size
+  })
   res.send(users)
 })
+// ---------------------------------------------------------
 
 app.get('/users/:id', async (req, res) => {
   const resquestedId = req.params.id
@@ -46,3 +63,4 @@ app.delete('/users/:id', async (req, res) => {
 app.listen(3000, () => {
   console.log("app is running");
 });
+
